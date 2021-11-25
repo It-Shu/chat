@@ -1,13 +1,15 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {v1} from "uuid";
+// import s from './AddMessage.module.sass'
 
-export const AddMessage = () => {
-
-    const [messages, setMessages] = useState<Array<any>>([]);
-    const [value, setValue] = useState('');
+const WebSock = () => {
+    const [myMessages, setMyMessages] = useState<Array<any>>([]);
+    const [serverMessages, setServerMessages] = useState<Array<any>>([]);
+    const [value, setValue] = useState<string>('');
     const socket = useRef<WebSocket>()
-    const [connected, setConnected] = useState(false);
-    const [username, setUsername] = useState('')
-    // const [username, setUsername] = useState('')
+    const [connected, setConnected] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('')
+
 
     function connect() {
         socket.current = new WebSocket('wss://ws.qexsystems.ru')
@@ -17,15 +19,15 @@ export const AddMessage = () => {
             const message = {
                 event: 'connection',
                 username,
-                id: Date.now()
+                id: v1(),
             }
             socket.current?.send(JSON.stringify(message))
+            setMyMessages(prev => [...prev, message])
         }
-        socket.current.onmessage = (e: MessageEvent) => {
-            const message = JSON.parse(e.data)
-            setMessages(prev => [message, ...prev])
+        socket.current.onmessage = (event: MessageEvent) => {
+            const message = JSON.parse(event.data)
+            setServerMessages(prev => [...prev, message])
         }
-
         socket.current.onclose = () => {
             console.log('Socket закрыт')
         }
@@ -34,55 +36,59 @@ export const AddMessage = () => {
         }
     }
 
-    const sendMessage = async () => {
 
+    const sendMessage = () => {
+        const currentHour = new Date().getHours().toString()
+        const currentMinutes = new Date().getMinutes().toString()
+        const currentTime = currentHour + ":" + currentMinutes
         const message = {
             username,
             message: value,
-            id: Date.now(),
-            event: 'message'
+            id: v1(),
+            event: 'message',
+            time: currentTime
         }
-        socket.current?.send(JSON.stringify(message))
+        socket.current?.send(JSON.stringify(message));
+        setMyMessages(prev => [...prev, message])
         setValue('')
     }
+
+
     if (!connected) {
         return (
-            <div>
-                <div>
+            <div className="center">
+                <div className="form">
                     <input
-                        type="text"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder='Enter your Name'
-                    />
+                        onChange={e => setUsername(e.target.value)}
+                        type="text"
+                        placeholder="Введите ваше имя"/>
                     <button onClick={connect}>Enter</button>
                 </div>
             </div>
         )
     }
 
+
     return (
-        <div>
+        <div className="center">
             <div>
-                <div>
-                    <input
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        type="text"
-                    />
+                <div className="messages">
+                    {myMessages.map(mess =>
+                        <div className="message">{mess.username}: {mess.message} {mess.time}</div>
+                    )}
+                    {serverMessages.map(mess =>
+                        <div className="server_message">{mess.username}: {mess.message} {mess.time}</div>
+                    )}
+                </div>
+                <div className="form">
+                    <input value={value} onChange={e => setValue(e.target.value)} type="text"/>
                     <button onClick={sendMessage}>Send</button>
                 </div>
-                <div>
-                    {messages.map((mess) => (
-                        <div key={mess.id}>
-                            {mess.event === 'connection'
-                                ? <div>User {mess.username} is connected</div>
-                                : <div>{mess.username}: {mess.message}</div>
-                            }
-                        </div>
-                    ))}
-                </div>
+
             </div>
         </div>
     );
 };
+
+export default WebSock;

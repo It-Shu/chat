@@ -8,11 +8,7 @@ export const Messages: FC = () => {
     const [messages, setMessages] = useState<any[]>([])
 
     useEffect(() => {
-        wsChannel.addEventListener('message', (e: MessageEvent<any>) => {
-            console.log(e.data);
-            // let newMessage = (e.data);
-            // setMessages((prevMessages) => [...prevMessages,...newMessage])
-        })
+
     }, [])
 
 

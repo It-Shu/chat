@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import s from './AddMessage.module.sass'
+import s from './AddMessages.module.sass'
 import {wsChannel} from "../../../api/chat-api";
 
-export const AddMessage = () => {
+export const AddMessages = () => {
 
     const [message, setMessage] = useState<string>('')
 
