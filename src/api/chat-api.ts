@@ -1,1 +1,4 @@
-import React from "react";
+
+
+
+export const  wsChannel = new WebSocket('wss://ws.qexsystems.ru')
