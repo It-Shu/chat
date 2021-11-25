@@ -7,6 +7,7 @@ export const AddMessage = () => {
     const socket = useRef<WebSocket>()
     const [connected, setConnected] = useState(false);
     const [username, setUsername] = useState('')
+    // const [username, setUsername] = useState('')
 
     function connect() {
         socket.current = new WebSocket('wss://ws.qexsystems.ru')
