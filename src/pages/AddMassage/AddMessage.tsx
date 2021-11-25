@@ -72,14 +72,21 @@ const WebSock = () => {
 
     return (
         <div className="center">
+            {myMessages.map(m => m.username)}
             <div>
                 <div className="messages">
-                    {myMessages.map(mess =>
-                        <div className="message">{mess.username}: {mess.message} {mess.time}</div>
-                    )}
-                    {serverMessages.map(mess =>
-                        <div className="server_message">{mess.username}: {mess.message} {mess.time}</div>
-                    )}
+                    <div className='message_block'>
+                        {myMessages.map(mess =>
+                            <div className="message">{mess.username}: {mess.message} {mess.time}</div>
+                        )}
+                    </div>
+                    <div className='server_message_block'>
+                        {serverMessages.map(mess =>
+                            <div className="server_message">{mess.username}: {mess.message} {mess.time}</div>
+                        )}
+                    </div>
+
+
                 </div>
                 <div className="form">
                     <input value={value} onChange={e => setValue(e.target.value)} type="text"/>
