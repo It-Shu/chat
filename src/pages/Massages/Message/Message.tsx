@@ -1,19 +1,29 @@
-import React from 'react';
+import React, {FC} from 'react';
 
-export const Message = () => {
+type MessageDataType = {
+    avatar: string
+    firstName: string
+    lastName: string
+    messageText: string
+    sendTime: string
+}
 
-    const message = {
-        url: 'https://gravatar.com/avatar/1f82b0492a0a938288c2d5b70534a1fb?s=400&d=robohash&r=x/30',
-        author: 'Dad',
-        text: 'Hello'
+export const Message: FC<{message: any}> = ({message}) => {
+
+    const messageData: MessageDataType = {
+        avatar: '',
+        firstName: '',
+        lastName: '',
+        messageText: '',
+        sendTime: ''
+
     }
 
     return (
         <div>
-            <img src={message.url} alt="URL"/> <b>{message.author}</b>
+            <img src={message.url} alt="URL"/> <b>{message.name}</b>
             <br/>
             {message.text}
-<hr/>
         </div>
     );
 };
