@@ -1,10 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
-// import s from './AddMessage.module.sass'
+import s from './AddMessage.module.scss'
 
-const WebSock = () => {
+const AddMessage = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
-    const [serverMessages, setServerMessages] = useState<Array<any>>([]);
+    // const [serverMessages, setServerMessages] = useState<Array<any>>([]);
+    const [userId, setUserId] = useState<string>('')
     const [value, setValue] = useState<string>('');
     const socket = useRef<WebSocket>()
     const [connected, setConnected] = useState<boolean>(false);
@@ -19,14 +20,15 @@ const WebSock = () => {
             const message = {
                 event: 'connection',
                 username,
-                id: v1(),
+                userId: v1(),
             }
             socket.current?.send(JSON.stringify(message))
-            setMyMessages(prev => [...prev, message])
+            // setMyMessages(prev => [...prev, message])
+            setUserId(message.userId)
         }
         socket.current.onmessage = (event: MessageEvent) => {
             const message = JSON.parse(event.data)
-            setServerMessages(prev => [...prev, message])
+            setMyMessages(prev => [...prev, message])
         }
         socket.current.onclose = () => {
             console.log('Socket закрыт')
@@ -37,14 +39,16 @@ const WebSock = () => {
     }
 
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         const currentHour = new Date().getHours().toString()
         const currentMinutes = new Date().getMinutes().toString()
         const currentTime = currentHour + ":" + currentMinutes
         const message = {
             username,
+            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
             message: value,
             id: v1(),
+            userId: userId,
             event: 'message',
             time: currentTime
         }
@@ -53,49 +57,73 @@ const WebSock = () => {
         setValue('')
     }
 
+    const mapMessage = (mess: string | any) => {
+        return userId === mess.userId
+                ? <div key={mess.id} className={s.my_message_block}>
+                <div className="my_message">
+                    {/*<div className='user'>{mess.username}:</div>*/}
+                    <div className='user-message'>{mess.message}</div>
+                    <div className='send_time'>{mess.time}</div>
+                </div>
+                {/*<img src={mess.avatar} className='avatar'/>*/}
+            </div>
+
+            : <div key={mess.id} className={s.server_message_block}>
+                <img src={mess.avatar} className='avatar'/>
+                <div className="server_message">
+                    <div className='user'>{mess.username}:</div>
+                    <div className='user-message'>{mess.message}</div>
+                    <div className='send_time'>{mess.time}</div>
+                </div>
+            </div>
+    }
+
+    const disabledEnterButton = () => {
+        return username === ''
+    }
+    const disabledSendButton = () => {
+        return value === ''
+    }
+
 
     if (!connected) {
         return (
-            <div className="center">
-                <div className="form">
-                    <input
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        type="text"
-                        placeholder="Введите ваше имя"/>
-                    <button onClick={connect}>Enter</button>
-                </div>
+        <div className={s.container}>
+            <div className={s.header}>
+                <h1>Chat</h1>
             </div>
+            <div className={s.body}>
+
+            </div>
+            <div className={s.footer}>
+                <input
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    type="text"
+                    placeholder="Enter your chat name"/>
+                <button onClick={connect} disabled={disabledEnterButton()}>ENTER</button>
+            </div>
+        </div>
         )
     }
 
 
     return (
-        <div className="center">
-            {myMessages.map(m => m.username)}
-            <div>
-                <div className="messages">
-                    <div className='message_block'>
-                        {myMessages.map(mess =>
-                            <div className="message">{mess.username}: {mess.message} {mess.time}</div>
-                        )}
-                    </div>
-                    <div className='server_message_block'>
-                        {serverMessages.map(mess =>
-                            <div className="server_message">{mess.username}: {mess.message} {mess.time}</div>
-                        )}
-                    </div>
+        <div className={s.container}>
+            <div className={s.header}>
+                <div>{username}</div>
 
-
-                </div>
-                <div className="form">
-                    <input value={value} onChange={e => setValue(e.target.value)} type="text"/>
-                    <button onClick={sendMessage}>Send</button>
-                </div>
-
+            </div>
+            <div className={s.body}>
+                {myMessages.map(mapMessage)}
+            </div>
+            <div className={s.footer}>
+                <input value={value} onChange={e => setValue(e.target.value)} type="text"
+                       placeholder='Enter text message...'/>
+                <button onClick={sendMessage} disabled={disabledSendButton()} >SEND</button>
             </div>
         </div>
     );
 };
 
-export default WebSock;
+export default AddMessage;

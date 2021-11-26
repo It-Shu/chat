@@ -1,29 +1,38 @@
 import React, {FC} from 'react';
 
 type MessageDataType = {
-    avatar: string
-    firstName: string
-    lastName: string
-    messageText: string
-    sendTime: string
+    avatar?: string
+    username: string
+    message: string
+    time: string
+    userId: string
 }
 
-export const Message: FC<{message: any}> = ({message}) => {
+export const Message: FC<MessageDataType> = ({avatar, message, time, username}) => {
 
-    const messageData: MessageDataType = {
-        avatar: '',
-        firstName: '',
-        lastName: '',
-        messageText: '',
-        sendTime: ''
-
-    }
 
     return (
         <div>
-            <img src={message.url} alt="URL"/> <b>{message.name}</b>
-            <br/>
-            {message.text}
+            <div>
+            <div className="my_message">
+                <div>
+                    <div className='user'>{username}:</div>
+                    <div className='user-message'>{message}</div>
+                </div>
+            </div>
+            <img src={avatar} className='avatar'/>
+        </div>
+
+             <div className="server_message_block">
+            <img src={avatar} className='avatar'/>
+            <div className="server_message">
+                <div>
+                    <div className='user'>{username}:</div>
+                    <div className='user-message'>{message}</div>
+                </div>
+            </div>
+
+        </div>
         </div>
     );
 };
