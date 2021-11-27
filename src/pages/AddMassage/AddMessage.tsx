@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
 import s from './AddMessage.module.scss'
 import buttonSend from '../../images/buttonSend.png'
+import buttonSendGreen from '../../images/buttonSendGreen.png'
 
 const AddMessage = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
@@ -75,12 +76,13 @@ const AddMessage = () => {
             <div key={mess.id} className={s.block_message}>
                 <img src={mess.avatar} className={s.avatar}/>
                 <div className={s.server_message_block}>
-                        <div className={s.user}>{mess.username}</div>
-                        <div className={s.user_message}>{mess.message}</div>
-                        <div className={s.server_send_time}>{mess.time}</div>
+                    <div className={s.user}>{mess.username}</div>
+                    <div className={s.user_message}>{mess.message}</div>
+                    <div className={s.server_send_time}>{mess.time}</div>
                 </div>
             </div>
     }
+
 
     const disabledEnterButton = () => {
         return username === ''
@@ -89,6 +91,17 @@ const AddMessage = () => {
         return value === ''
     }
 
+    const imageSendButton = () => {
+        return disabledSendButton()
+            ? <img className={s.imageButton} src={buttonSend} alt=""/>
+            : <img className={s.imageButton} src={buttonSendGreen} alt=""/>
+    }
+
+    const imageEnterButton = () => {
+        return disabledEnterButton()
+            ? <img className={s.imageButton} src={buttonSend} alt=""/>
+            : <img className={s.imageButton} src={buttonSendGreen} alt=""/>
+    }
 
     if (!connected) {
         return (
@@ -105,7 +118,9 @@ const AddMessage = () => {
                         onChange={e => setUsername(e.target.value)}
                         type="text"
                         placeholder="Enter your chat name"/>
-                    <button onClick={connect} disabled={disabledEnterButton()}><img src={buttonSend} alt=""/></button>
+                    <button onClick={connect} disabled={disabledEnterButton()}>
+                        {imageEnterButton()}
+                    </button>
                 </div>
             </div>
         )
@@ -124,7 +139,7 @@ const AddMessage = () => {
                 <input value={value} onChange={e => setValue(e.target.value)} type="text"
                        placeholder='Enter text message...'/>
                 <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
-                    <img src={buttonSend} alt=""/>
+                    {imageSendButton()}
                 </button>
             </div>
         </div>

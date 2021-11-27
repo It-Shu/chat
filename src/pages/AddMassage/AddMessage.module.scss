@@ -132,19 +132,19 @@
   button {
     border: none;
     outline: none;
-    color: #009854;
+    background-color: #3A3A3A;
+    //color: #009854;
     cursor: pointer;
     width: 30px;
     height: 30px;
     margin-right: 20px;
     margin-top: 5px;
-
-    img {
-
-      width: 30px;
-      height: 30px;
-    }
   }
+}
+
+.imageButton {
+  width: 30px;
+  height: 30px;
 }
 
 .avatar {
