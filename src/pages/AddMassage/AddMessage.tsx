@@ -123,7 +123,7 @@ const AddMessage = () => {
             <div className={s.footer}>
                 <input value={value} onChange={e => setValue(e.target.value)} type="text"
                        placeholder='Enter text message...'/>
-                <button onClick={sendMessage} disabled={disabledSendButton()}>SEND</button>
+                <button onClick={sendMessage} disabled={disabledSendButton()}><img className={s.img} src={'https://w7.pngwing.com/pngs/801/890/png-transparent-airplane-paper-plane-submit-button-cdr-angle-rectangle.png'} alt=""/></button>
             </div>
         </div>
     );
