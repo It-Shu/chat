@@ -1,13 +1,20 @@
-.sentBlock
-  display: flex
-  justify-content: center
+.my_message_block {
+  margin-left: auto;
+  margin-bottom: 10px;
+  background-color: #1be56a;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.07);
+  color: white;
+  opacity: .8;
+  width: 30%;
+  border-radius: 10px;
+  padding: 10px;
+}
 
-.textArea
-  margin: 0
-  width: 47rem
-  height: 40px
+.user_message {
+  overflow-wrap: break-word;
+}
 
-.button
-  height: 45px
-  background-color: white
-
+.send_time {
+  display: flex;
+  justify-content: flex-end;
+}

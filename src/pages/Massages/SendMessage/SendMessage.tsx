@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import s from '../../Chat/Chat.module.scss'
+import s from './SendMessage.module.scss'
 
 type SendMessageType = {
     message: string

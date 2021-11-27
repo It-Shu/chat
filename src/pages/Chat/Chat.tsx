@@ -1,11 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
-import s from './Chat.module.scss'
-import buttonSend from '../../images/buttonSend.png'
-import buttonSendGreen from '../../images/buttonSendGreen.png'
-import {SendMessage} from "../Massages/SendMessage/SendMessage";
-import {ServerMessage} from "../Massages/ServerMessage/ServerMessage";
-import {ConnectPage} from "../ConnectPage/ConnectPage";
+import { ChatPage } from '../ChatPages/ChatPage';
+import {ConnectPage} from "../ChatPages/ConnectPage";
 
 const Chat = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
@@ -26,8 +22,8 @@ const Chat = () => {
                 username,
                 userId: v1(),
             }
+
             socket.current?.send(JSON.stringify(message))
-            // setMyMessages(prev => [...prev, message])
             setUserId(message.userId)
         }
         socket.current.onmessage = (event: MessageEvent) => {
@@ -66,85 +62,20 @@ const Chat = () => {
         setValue('')
     }
 
-    const mapMessage = (mess: string | any) => {
-        return userId === mess.userId
-            ? <SendMessage
-                key={mess.id}
-                message={mess.message}
-                time={mess.time}/>
 
-            : <ServerMessage
-                key={mess.id}
-                avatar={mess.avatar}
-                username={mess.username}
-                message={mess.message}
-                time={mess.time}/>
+    return (!connected)
+        ? <ConnectPage
+            connect={connect}
+            username={username}
+            onChange={e => setUsername(e.target.value)}/>
 
-    }
-
-
-    // const disabledConnectButton = () => {
-    //     return username === ''
-    // }
-
-    const disabledSendButton = () => {
-        return value === ''
-    }
-
-    const imageSendButton = () => {
-        return disabledSendButton()
-            ? <img className={s.imageButton} src={buttonSend} alt=""/>
-            : <img className={s.imageButton} src={buttonSendGreen} alt=""/>
-    }
-
-    // const imageConnectButton = () => {
-    //     return disabledConnectButton()
-    //         ? <img className={s.imageButton} src={buttonSend} alt=""/>
-    //         : <img className={s.imageButton} src={buttonSendGreen} alt=""/>
-    // }
-
-    if (!connected) {
-        return (
-            <ConnectPage connect={connect} username={username} onChange={e => setUsername(e.target.value)}/>
-            // <div className={s.container}>
-            //     <div className={s.header}>
-            //         <h1>Chat</h1>
-            //     </div>
-            //     <div className={s.body}>
-            //
-            //     </div>
-            //     <div className={s.footer}>
-            //         <input
-            //             value={username}
-            //             onChange={e => setUsername(e.target.value)}
-            //             type="text"
-            //             placeholder="Enter your chat name"/>
-            //         <button onClick={connect} disabled={disabledConnectButton()}>
-            //             {imageConnectButton()}
-            //         </button>
-            //     </div>
-            // </div>
-        )
-    }
-
-
-    return (
-        <div className={s.container}>
-            <div className={s.header}>
-                <div>{username}</div>
-            </div>
-            <div className={s.body}>
-                {myMessages.map(mapMessage)}
-            </div>
-            <div className={s.footer}>
-                <input value={value} onChange={e => setValue(e.target.value)} type="text"
-                       placeholder='Enter text message...'/>
-                <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
-                    {imageSendButton()}
-                </button>
-            </div>
-        </div>
-    );
+        : <ChatPage
+            value={value}
+            userId={userId}
+            username={username}
+            myMessages={myMessages}
+            onChange={e => setValue(e.target.value)}
+            sendMessage={sendMessage}/>
 };
 
 export default Chat;

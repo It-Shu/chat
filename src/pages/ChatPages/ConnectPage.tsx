@@ -1,16 +1,16 @@
 import React, {FC} from 'react';
-import s from "../Chat/Chat.module.scss";
+import s from "./Chat.module.scss";
 import buttonSend from "../../images/buttonSend.png";
 import buttonSendGreen from "../../images/buttonSendGreen.png";
 
 
-type ConnectPage = {
+type ConnectPageType = {
     username: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     connect: () => void
 }
 
-export const ConnectPage: FC<ConnectPage> = ({username, onChange, connect}) => {
+export const ConnectPage: FC<ConnectPageType> = ({username, onChange, connect}) => {
 
     const disabledConnectButton = () => {
         return username === ''
