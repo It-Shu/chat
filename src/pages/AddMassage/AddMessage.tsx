@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
 import s from './AddMessage.module.scss'
-import {brotliCompress} from "zlib";
+import buttonSend from '../../images/buttonSend.png'
 
 const AddMessage = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
@@ -105,7 +105,7 @@ const AddMessage = () => {
                         onChange={e => setUsername(e.target.value)}
                         type="text"
                         placeholder="Enter your chat name"/>
-                    <button onClick={connect} disabled={disabledEnterButton()}>ENTER</button>
+                    <button onClick={connect} disabled={disabledEnterButton()}><img src={buttonSend} alt=""/></button>
                 </div>
             </div>
         )
@@ -123,7 +123,9 @@ const AddMessage = () => {
             <div className={s.footer}>
                 <input value={value} onChange={e => setValue(e.target.value)} type="text"
                        placeholder='Enter text message...'/>
-                <button onClick={sendMessage} disabled={disabledSendButton()}><img className={s.img} src={'https://w7.pngwing.com/pngs/801/890/png-transparent-airplane-paper-plane-submit-button-cdr-angle-rectangle.png'} alt=""/></button>
+                <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
+                    <img src={buttonSend} alt=""/>
+                </button>
             </div>
         </div>
     );

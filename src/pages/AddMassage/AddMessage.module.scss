@@ -1,3 +1,5 @@
+//@import "../../images/buttonSend.png";
+
 * {
   margin: 0;
   padding: 0;
@@ -79,22 +81,10 @@
   color: white;
   width: 30%;
   opacity: .8;
-  //max-width: 50vw;
   border-radius: 10px;
   margin-bottom: 15px;
   margin-left: 10px;
-  //.server_message_block:after {
-  //    content: '';
-  //    position: absolute;
-  //    border-style: solid;
-  //    border-width: 15px 16px 15px 0;
-  //    width: 0;
-  //    z-index: 0;
-  //    margin-top: -65px;
-  //    left: 116px;
-  //    border-color: transparent #45d20c;
-  //  }
-  }
+}
 
 .user_message {
   overflow-wrap: break-word;
@@ -114,7 +104,8 @@
 
 .footer {
   display: flex;
-  background-color: #009854;
+  background-color: #3A3A3A;
+  //background-color: #009854;
 
   input {
     color: white;
@@ -125,6 +116,7 @@
     padding-left: 5px;
     font-size: 16px;
     background-color: #3A3A3A;
+    //padding-right: 20px;
   }
 
   button:disabled {
@@ -132,18 +124,27 @@
     outline: none;
     background-color: #3A3A3A;
     cursor: default;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
   }
 
   button {
     border: none;
     outline: none;
-    background-color: #14FF72;
+    color: #009854;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    margin-top: 5px;
+
+    img {
+
+      width: 30px;
+      height: 30px;
+    }
   }
-}
-.img {
-  width: 30px;
-  height: 30px;
 }
 
 .avatar {
