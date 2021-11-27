@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, KeyboardEvent} from 'react';
 import {v1} from "uuid";
-import { ChatPage } from '../ChatPages/ChatPage';
+import {ChatPage} from '../ChatPages/ChatPage';
 import {ConnectPage} from "../ChatPages/ConnectPage";
 
 const Chat = () => {
@@ -39,27 +39,29 @@ const Chat = () => {
     }
 
 
-    const sendMessage = async () => {
-        const currentHour = new Date().getHours().toString()
-        const currentMinutes = new Date().getMinutes()
-        const minutesWithO = () => {
-            return currentMinutes < 10 ? '0' + currentMinutes.toString() : currentMinutes.toString()
-        }
+    const sendMessage = () => {
 
-        const currentTime = currentHour + ":" + minutesWithO()
+            const currentHour = new Date().getHours().toString()
+            const currentMinutes = new Date().getMinutes()
+            const minutesWithO = () => {
+                return currentMinutes < 10 ? '0' + currentMinutes.toString() : currentMinutes.toString()
+            }
 
-        const message = {
-            username,
-            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
-            message: value,
-            id: v1(),
-            userId: userId,
-            event: 'message',
-            time: currentTime
-        }
-        socket.current?.send(JSON.stringify(message));
-        setMyMessages(prev => [...prev, message])
-        setValue('')
+            const currentTime = currentHour + ":" + minutesWithO()
+
+            const message = {
+                username,
+                avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
+                message: value,
+                id: v1(),
+                userId: userId,
+                event: 'message',
+                time: currentTime
+            }
+            socket.current?.send(JSON.stringify(message));
+            setMyMessages(prev => [...prev, message])
+            setValue('')
+
     }
 
 
