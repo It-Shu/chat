@@ -43,6 +43,7 @@ const AddMessage = () => {
         const currentHour = new Date().getHours().toString()
         const currentMinutes = new Date().getMinutes().toString()
         const currentTime = currentHour + ":" + currentMinutes
+
         const message = {
             username,
             avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
@@ -59,7 +60,7 @@ const AddMessage = () => {
 
     const mapMessage = (mess: string | any) => {
         return userId === mess.userId
-                ? <div key={mess.id} className={s.my_message_block}>
+            ? <div key={mess.id} className={s.my_message_block}>
                 <div className="my_message">
                     {/*<div className='user'>{mess.username}:</div>*/}
                     <div className='user-message'>{mess.message}</div>
@@ -68,12 +69,15 @@ const AddMessage = () => {
                 {/*<img src={mess.avatar} className='avatar'/>*/}
             </div>
 
-            : <div key={mess.id} className={s.server_message_block}>
-                <img src={mess.avatar} className='avatar'/>
-                <div className="server_message">
-                    <div className='user'>{mess.username}:</div>
-                    <div className='user-message'>{mess.message}</div>
-                    <div className='send_time'>{mess.time}</div>
+            :
+            <div key={mess.id} className={s.block_message}>
+                <img src={mess.avatar} className={s.avatar}/>
+                <div className={s.server_message_block}>
+                    {/*<div className="server_message">*/}
+                        <div className={s.user}>{mess.username}:</div>
+                        <div className={s.user_message}>{mess.message}</div>
+                        <div className={s.server_send_time}>{mess.time}</div>
+                    {/*</div>*/}
                 </div>
             </div>
     }
@@ -88,22 +92,22 @@ const AddMessage = () => {
 
     if (!connected) {
         return (
-        <div className={s.container}>
-            <div className={s.header}>
-                <h1>Chat</h1>
-            </div>
-            <div className={s.body}>
+            <div className={s.container}>
+                <div className={s.header}>
+                    <h1>Chat</h1>
+                </div>
+                <div className={s.body}>
 
+                </div>
+                <div className={s.footer}>
+                    <input
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        type="text"
+                        placeholder="Enter your chat name"/>
+                    <button onClick={connect} disabled={disabledEnterButton()}>ENTER</button>
+                </div>
             </div>
-            <div className={s.footer}>
-                <input
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    type="text"
-                    placeholder="Enter your chat name"/>
-                <button onClick={connect} disabled={disabledEnterButton()}>ENTER</button>
-            </div>
-        </div>
         )
     }
 
@@ -120,7 +124,7 @@ const AddMessage = () => {
             <div className={s.footer}>
                 <input value={value} onChange={e => setValue(e.target.value)} type="text"
                        placeholder='Enter text message...'/>
-                <button onClick={sendMessage} disabled={disabledSendButton()} >SEND</button>
+                <button onClick={sendMessage} disabled={disabledSendButton()}>SEND</button>
             </div>
         </div>
     );
