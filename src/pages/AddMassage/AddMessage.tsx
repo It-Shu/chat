@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
 import s from './AddMessage.module.scss'
+import {brotliCompress} from "zlib";
 
 const AddMessage = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
@@ -59,12 +60,13 @@ const AddMessage = () => {
     }
 
     const mapMessage = (mess: string | any) => {
+
         return userId === mess.userId
             ? <div key={mess.id} className={s.my_message_block}>
                 <div className="my_message">
-                    {/*<div className='user'>{mess.username}:</div>*/}
-                    <div className='user-message'>{mess.message}</div>
-                    <div className='send_time'>{mess.time}</div>
+                    {/*<div className='user'>{mess.username}</div>*/}
+                    <div className={s.user_message}>{mess.message}</div>
+                    <div className={s.send_time}>{mess.time}</div>
                 </div>
                 {/*<img src={mess.avatar} className='avatar'/>*/}
             </div>
@@ -74,7 +76,7 @@ const AddMessage = () => {
                 <img src={mess.avatar} className={s.avatar}/>
                 <div className={s.server_message_block}>
                     {/*<div className="server_message">*/}
-                        <div className={s.user}>{mess.username}:</div>
+                        <div className={s.user}>{mess.username}</div>
                         <div className={s.user_message}>{mess.message}</div>
                         <div className={s.server_send_time}>{mess.time}</div>
                     {/*</div>*/}
@@ -116,7 +118,6 @@ const AddMessage = () => {
         <div className={s.container}>
             <div className={s.header}>
                 <div>{username}</div>
-
             </div>
             <div className={s.body}>
                 {myMessages.map(mapMessage)}
