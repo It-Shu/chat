@@ -75,11 +75,9 @@ const AddMessage = () => {
             <div key={mess.id} className={s.block_message}>
                 <img src={mess.avatar} className={s.avatar}/>
                 <div className={s.server_message_block}>
-                    {/*<div className="server_message">*/}
                         <div className={s.user}>{mess.username}</div>
                         <div className={s.user_message}>{mess.message}</div>
                         <div className={s.server_send_time}>{mess.time}</div>
-                    {/*</div>*/}
                 </div>
             </div>
     }
