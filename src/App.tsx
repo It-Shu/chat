@@ -1,12 +1,10 @@
 import React from 'react';
-import AddMessage from "./pages/AddMassage/AddMessage";
-import './add.css'
+import Chat from './pages/Chat/Chat';
 
 function App() {
   return (
     <div>
-        <AddMessage/>
-        {/*<ChatPage/>*/}
+        <Chat/>
     </div>
   );
 }
