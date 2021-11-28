@@ -1,4 +1,4 @@
-import React, {useRef, useState, KeyboardEvent} from 'react';
+import React, {useRef, useState} from 'react';
 import {v1} from "uuid";
 import {ChatPage} from '../ChatPages/ChatPage';
 import {ConnectPage} from "../ChatPages/ConnectPage";
@@ -11,6 +11,15 @@ const Chat = () => {
     const [connected, setConnected] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('')
 
+
+  // const manifest = {
+  //       "name": "chat_pwa",
+  //       "short_name": "ch_pwa",
+  //       "theme_color": "#81ba7c",
+  //       "background_color": "#69a2cf",
+  //       "display": "browser",
+  //       "start_url": "."
+  //   }
 
     function connect() {
         socket.current = new WebSocket('wss://ws.qexsystems.ru')
@@ -26,6 +35,7 @@ const Chat = () => {
             socket.current?.send(JSON.stringify(message))
             setUserId(message.userId)
         }
+
         socket.current.onmessage = (event: MessageEvent) => {
             const message = JSON.parse(event.data)
             setMyMessages(prev => [...prev, message])
@@ -39,30 +49,31 @@ const Chat = () => {
     }
 
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
 
-            const currentHour = new Date().getHours().toString()
-            const currentMinutes = new Date().getMinutes()
-            const minutesWithO = () => {
-                return currentMinutes < 10 ? '0' + currentMinutes.toString() : currentMinutes.toString()
-            }
+        const currentHour = new Date().getHours().toString()
+        const currentMinutes = new Date().getMinutes()
+        const minutesWithO = () => {
+            return currentMinutes < 10 ? '0' + currentMinutes.toString() : currentMinutes.toString()
+        }
 
-            const currentTime = currentHour + ":" + minutesWithO()
+        const currentTime = currentHour + ":" + minutesWithO()
 
-            const message = {
-                username,
-                avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
-                message: value,
-                id: v1(),
-                userId: userId,
-                event: 'message',
-                time: currentTime
-            }
-            socket.current?.send(JSON.stringify(message));
-            setMyMessages(prev => [...prev, message])
-            setValue('')
-
+        const message = {
+            username,
+            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwSgYDB6AplaYZG3mdUygpPwCZCFlXQ8BbIw&usqp=CAU',
+            message: value,
+            id: v1(),
+            userId: userId,
+            event: 'message',
+            time: currentTime
+        }
+        socket.current?.send(JSON.stringify(message));
+        setMyMessages(prev => [...prev, message])
+        setValue('')
     }
+
+
 
 
     return (!connected)
@@ -71,7 +82,7 @@ const Chat = () => {
             username={username}
             onChange={e => setUsername(e.target.value)}/>
 
-        : <ChatPage
+        :  <ChatPage
             value={value}
             userId={userId}
             username={username}

@@ -1,4 +1,4 @@
-import React, {FC, KeyboardEvent} from 'react';
+import React, {FC} from 'react';
 import s from "./Chat.module.scss";
 import buttonSend from "../../images/buttonSend.png";
 import buttonSendGreen from "../../images/buttonSendGreen.png";
