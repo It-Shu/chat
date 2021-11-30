@@ -1,7 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {KeyboardEvent, useRef, useState} from 'react';
 import {v1} from "uuid";
 import {ChatPage} from '../ChatPages/ChatPage';
 import {ConnectPage} from "../ChatPages/ConnectPage";
+import SuperInputText from "../../Ui/Input";
+import s from "../ChatPages/Chat.module.scss";
+import SuperButton from "../../Ui/Button";
 
 const Chat = () => {
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
@@ -53,6 +56,7 @@ const Chat = () => {
 
         const currentHour = new Date().getHours().toString()
         const currentMinutes = new Date().getMinutes()
+
         const minutesWithO = () => {
             return currentMinutes < 10 ? '0' + currentMinutes.toString() : currentMinutes.toString()
         }
@@ -76,19 +80,27 @@ const Chat = () => {
 
 
 
-    return (!connected)
-        ? <ConnectPage
-            connect={connect}
-            username={username}
-            onChange={e => setUsername(e.target.value)}/>
+    // return (!connected)
+    //     ? <ConnectPage
+    //         connect={connect}
+    //         username={username}
+    //         onChange={e => setUsername(e.target.value)}/>
+    //
 
-        :  <ChatPage
-            value={value}
-            userId={userId}
-            username={username}
-            myMessages={myMessages}
-            onChange={e => setValue(e.target.value)}
-            sendMessage={sendMessage}/>
+        // :
+  return  <>
+      <ChatPage
+          value={value}
+          userId={userId}
+          username={username}
+          myMessages={myMessages}
+          onChange={e => setValue(e.target.value)}
+          sendMessage={sendMessage}
+          setValue={sendMessage}
+      />
+  </>
+
+
 };
 
 export default Chat;

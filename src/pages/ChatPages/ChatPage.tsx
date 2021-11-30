@@ -1,10 +1,11 @@
-import React, {FC} from 'react';
+import React, {FC, KeyboardEvent} from 'react';
 import s from "./Chat.module.scss";
 import buttonSend from "../../images/buttonSend.png";
 import buttonSendGreen from "../../images/buttonSendGreen.png";
 import {SendMessage} from "../Massages/SendMessage/SendMessage";
 import {ServerMessage} from "../Massages/ServerMessage/ServerMessage";
 import SuperInputText from "../../Ui/Input";
+import SuperButton from "../../Ui/Button";
 
 type ChatPageType = {
     value: string
@@ -12,6 +13,7 @@ type ChatPageType = {
     username: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     sendMessage: () => void
+    setValue: () => void
     myMessages: string[]
 }
 
@@ -22,7 +24,8 @@ export const ChatPage: FC<ChatPageType> = (
         username,
         myMessages,
         onChange,
-        sendMessage
+        sendMessage,
+        setValue
     }
 ) => {
 
@@ -53,8 +56,6 @@ export const ChatPage: FC<ChatPageType> = (
     }
 
 
-
-
     return (
         <div className={s.container}>
             <div className={s.header}>
@@ -65,11 +66,13 @@ export const ChatPage: FC<ChatPageType> = (
             </div>
             <div className={s.footer}>
                 <input value={value} onChange={onChange} type="text"
+                       // onKeyPress={onEnter}
                        placeholder='Enter text message...'/>
-                <SuperInputText />
                 <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
                     {imageSendButton()}
                 </button>
+                <SuperInputText value={value} onChangeText={setValue} onEnter={sendMessage}/>
+                <SuperButton onClick={sendMessage}/>
             </div>
         </div>
     );
