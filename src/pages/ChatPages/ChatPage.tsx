@@ -4,6 +4,7 @@ import buttonSend from "../../images/buttonSend.png";
 import buttonSendGreen from "../../images/buttonSendGreen.png";
 import {SendMessage} from "../Massages/SendMessage/SendMessage";
 import {ServerMessage} from "../Massages/ServerMessage/ServerMessage";
+import SuperInputText from "../../Ui/Input";
 
 type ChatPageType = {
     value: string
@@ -65,6 +66,7 @@ export const ChatPage: FC<ChatPageType> = (
             <div className={s.footer}>
                 <input value={value} onChange={onChange} type="text"
                        placeholder='Enter text message...'/>
+                <SuperInputText />
                 <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
                     {imageSendButton()}
                 </button>
