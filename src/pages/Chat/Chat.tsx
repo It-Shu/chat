@@ -13,6 +13,7 @@ const Chat = () => {
     const socket = useRef<WebSocket>()
     const [connected, setConnected] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('')
+    const [avatar, setAvatar] = useState<string>('')
 
     // function connect with socket, create a chat name and receive messages from the socket server
     function connect() {
@@ -66,14 +67,15 @@ const Chat = () => {
         socket.current?.send(JSON.stringify(message));
         setMyMessages(prev => [...prev, message])
         setValue('')
+        setAvatar(message.avatar)
     }
 
     // Send message if press Enter on keyboard
     const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
         if (connected && e.key === "Enter") {
-            sendMessage()
+            return sendMessage()
         } else if (!connected && e.key === "Enter") {
-            connect()
+            return connect()
         }
     }
 
@@ -94,6 +96,7 @@ const Chat = () => {
             onChange={e => setValue(e.target.value)}
             sendMessage={sendMessage}
             onKeyDown={onKeyPressCallback}
+            avatar={avatar}
         />
 
 

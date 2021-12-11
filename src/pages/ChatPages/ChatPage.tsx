@@ -13,6 +13,7 @@ type ChatPageType = {
     sendMessage: () => void
     onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
     myMessages: string[]
+    avatar?: string
 }
 
 export const ChatPage: FC<ChatPageType> = (
@@ -23,7 +24,8 @@ export const ChatPage: FC<ChatPageType> = (
         myMessages,
         onChange,
         sendMessage,
-        onKeyDown
+        onKeyDown,
+        avatar
     }
 ) => {
 
@@ -61,7 +63,7 @@ export const ChatPage: FC<ChatPageType> = (
     return (
         <div className={s.container}>
             <div className={s.header}>
-                <div>{username}</div>
+                <img src={avatar} alt="avatar"/><div>{username}</div>
             </div>
             <div className={s.body}>
                 {myMessages.map(mapMessage)}

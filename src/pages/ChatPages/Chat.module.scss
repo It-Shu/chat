@@ -11,7 +11,14 @@
   text-align: center;
   background-color: #0F0F0F;
   color: white;
+  display: flex;
 
+  img {
+    padding: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+  }
   div {
     color: white;
     padding: 15px;
