@@ -4,8 +4,6 @@ import buttonSend from "../../images/buttonSend.png";
 import buttonSendGreen from "../../images/buttonSendGreen.png";
 import {SendMessage} from "../Massages/SendMessage/SendMessage";
 import {ServerMessage} from "../Massages/ServerMessage/ServerMessage";
-import SuperInputText from "../../Ui/Input";
-import SuperButton from "../../Ui/Button";
 
 type ChatPageType = {
     value: string
@@ -13,7 +11,7 @@ type ChatPageType = {
     username: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     sendMessage: () => void
-    setValue: () => void
+    onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void
     myMessages: string[]
 }
 
@@ -25,20 +23,24 @@ export const ChatPage: FC<ChatPageType> = (
         myMessages,
         onChange,
         sendMessage,
-        setValue
+        onKeyDown
     }
 ) => {
 
+    // disabled button if value is empty
     const disabledSendButton = () => {
         return value === ''
     }
 
+    // change button style while input value is changed
     const imageSendButton = () => {
         return disabledSendButton()
             ? <img className={s.imageButton} src={buttonSend} alt=""/>
             : <img className={s.imageButton} src={buttonSendGreen} alt=""/>
     }
 
+
+    // map function return messages
     const mapMessage = (mess: string | any) => {
         return userId === mess.userId
             ? <SendMessage
@@ -66,13 +68,10 @@ export const ChatPage: FC<ChatPageType> = (
             </div>
             <div className={s.footer}>
                 <input value={value} onChange={onChange} type="text"
-                       // onKeyPress={onEnter}
-                       placeholder='Enter text message...'/>
+                       placeholder='Enter text message...' onKeyDown={onKeyDown}/>
                 <button className={s.button} onClick={sendMessage} disabled={disabledSendButton()}>
                     {imageSendButton()}
                 </button>
-                <SuperInputText value={value} onChangeText={setValue} onEnter={sendMessage}/>
-                <SuperButton onClick={sendMessage}/>
             </div>
         </div>
     );

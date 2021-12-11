@@ -2,11 +2,11 @@ import React, {KeyboardEvent, useRef, useState} from 'react';
 import {v1} from "uuid";
 import {ChatPage} from '../ChatPages/ChatPage';
 import {ConnectPage} from "../ChatPages/ConnectPage";
-import SuperInputText from "../../Ui/Input";
-import s from "../ChatPages/Chat.module.scss";
-import SuperButton from "../../Ui/Button";
+
 
 const Chat = () => {
+
+    // local data
     const [myMessages, setMyMessages] = useState<Array<any>>([]);
     const [userId, setUserId] = useState<string>('')
     const [value, setValue] = useState<string>('');
@@ -14,16 +14,7 @@ const Chat = () => {
     const [connected, setConnected] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('')
 
-
-  // const manifest = {
-  //       "name": "chat_pwa",
-  //       "short_name": "ch_pwa",
-  //       "theme_color": "#81ba7c",
-  //       "background_color": "#69a2cf",
-  //       "display": "browser",
-  //       "start_url": "."
-  //   }
-
+    // function connect with socket, create a chat name and receive messages from the socket server
     function connect() {
         socket.current = new WebSocket('wss://ws.qexsystems.ru')
 
@@ -51,7 +42,7 @@ const Chat = () => {
         }
     }
 
-
+    // function crate message data && send message on socket
     const sendMessage = async () => {
 
         const currentHour = new Date().getHours().toString()
@@ -77,28 +68,33 @@ const Chat = () => {
         setValue('')
     }
 
+    // Send message if press Enter on keyboard
+    const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (connected && e.key === "Enter") {
+            sendMessage()
+        } else if (!connected && e.key === "Enter") {
+            connect()
+        }
+    }
 
 
+    return (!connected)
+        ? <ConnectPage
+            connect={connect}
+            username={username}
+            onChange={e => setUsername(e.target.value)}
+            onKeyDown={onKeyPressCallback}
+        />
 
-    // return (!connected)
-    //     ? <ConnectPage
-    //         connect={connect}
-    //         username={username}
-    //         onChange={e => setUsername(e.target.value)}/>
-    //
-
-        // :
-  return  <>
-      <ChatPage
-          value={value}
-          userId={userId}
-          username={username}
-          myMessages={myMessages}
-          onChange={e => setValue(e.target.value)}
-          sendMessage={sendMessage}
-          setValue={sendMessage}
-      />
-  </>
+        : <ChatPage
+            value={value}
+            userId={userId}
+            username={username}
+            myMessages={myMessages}
+            onChange={e => setValue(e.target.value)}
+            sendMessage={sendMessage}
+            onKeyDown={onKeyPressCallback}
+        />
 
 
 };
